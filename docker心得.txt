@@ -1,0 +1,71 @@
+1、docker切换镜像
+如果要使用版本为14.04的ubuntu系统镜像来运行容器时，命令如下：
+docker run -t -i ubuntu:14.04 /bin/bash
+
+2、获取新镜像
+如果想下载centos镜像，命令如下：
+docker pull centos
+
+3、查看镜像，命令如下：
+docker images
+
+4、查找镜像
+docker search httpd
+
+5、进入容器
+如果我想进入到centos系统中，命令如下:
+docker run -t -i centos
+退出镜像直接输入exit;返回docker主镜像
+
+6、删除镜像，命令如下：
+docker rmi 镜像id
+
+7、查看镜像id命令如下：
+docker images
+
+8、删除容器
+docker rm 容器id
+
+9、查看容器命令如下：
+docker ps -a 
+
+10、更新镜像，明日如下
+docker commit 镜像id centos-vim
+
+11、保存最终版镜像
+（1）docker save REPOSITORY > XX.tar（选中镜像打包）
+（2）docker load < XX.tar（最后再导入回去）
+
+12、启动centos里面的nginx
+ (1)、docker run --name my-cnt-centos-6.7  -itd -p 80:80  <镜像> /bin/bash【--name：表示容器名称；80:80：表示外部端口：容器内端口】
+（2）docker exec -it <容器id>  /bin/bash
+
+13、插曲（PHP如需要用ROOT运行，则直接输入service php-fpm -R）
+
+14、安装php
+(1)安装php依赖包，命令如下:
+yum install -y libxml2 *openssl* libcurl* libjpeg* libpng* freetype* libzip* libmcrypt*
+(2)wget下载php安装包，命令如下:
+# 此地址的下载命令，使用 -O 重命名源码包，否则下载后的文件名会是 mirror
+wget -O php-7.3.1.tar.gz http://cn2.php.net/get/php-7.3.1.tar.gz/from/this/mirror
+（3)安装php,命令如下:
+[1]./configure --prefix=/mnt/php7 --with-mysqli --with-iconv-dir --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir --enable-simplexml --enable-xml --disable-rpath --enable-bcmath --enable-soap --enable-zip --with-curl --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-mbstring --enable-sockets --with-gd --with-openssl --with-mhash --enable-opcache --disable-fileinfo
+[2]make && make install
+[3]设置配置文件，命令如下 :
+[4]cp /mnt/php7/etc/php-fpm.conf.default /mnt/php7/etc/php-fpm.conf
+   cp /mnt/php7/etc/php-fpm.d/www.conf.default /mnt/php7/etc/php-fpm.d/www.conf
+[5]复制php-fpm到/etc/init.d目录下，方便直接启动,命令如下：
+   cp /mnt/php7/sbin/php-fpm /etc/init.d/php-fpm
+[6]源码安装后是没php.ini的，所以我们要手动复制下载包里面的php.ini-production到php目录中的lib文件架里面，然后killall php-fpm，再重启Php
+
+
+15、本地共享到docker容器中
+[1]在本地新建文件夹，然后让文件夹共享（例：我共享的是F:\wwwTest）
+[2]Oracle VM VirtualBox中选中运行中的虚拟机，然后点设置。再点共享文件夹（例：我共享的是F:\wwwTest，映射到虚拟机中的/mnt/www/Test）
+[3]再选中固定分配，然后在右面新建共享文件夹
+[3.1]其中，共享文件夹路径是自己电脑本地路径，共享文件夹名称是虚拟机中的路径（注：这是虚拟机的路径，不是docker容器路径）
+[3.2]然后下面多选框选自动挂载和固定分配两个选项,OK
+[3.3]最后重启虚拟机。（主要，不是docker）
+[4]docker目录映射，命令如下：
+docker run -itd -p 8088:80 --name www -v /mnt/wwwTest:/var/www/data centos2.0 /bin/bash
+[5]最后。进入容器操作，完成
