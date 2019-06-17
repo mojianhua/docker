@@ -82,3 +82,6 @@ export PHP_HOME=/mnt/php----------------这是php的路径
 export PATH=$PATH:$PHP_HOME/bin
 [3]重启profile命令如下
 source /etc/profile
+
+18、dockerFile运行，命令如下，其中，docker build -t 是简历镜像，centos1.8是镜像名称，1.8是镜像版本号 ，'.'是dockerFile文件路径
+1、docker build -t centos1.8:1.8  .
