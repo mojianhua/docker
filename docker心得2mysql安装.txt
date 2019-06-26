@@ -17,7 +17,7 @@ cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
 5、配置环境变量
 5.1、vi /etc/profile 
 5.2、在后面加上
-PATH=$PATH:$HOME/bin:/usr/local/mysql/bin:/usr/local/mysql/lib
+export PATH=$PATH:$HOME/bin:/usr/local/mysql/bin:/usr/local/mysql/lib
 export PATH
 5.3、source /etc/profile
 6、docker启动mysql和nginx
