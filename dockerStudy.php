@@ -39,4 +39,41 @@ docker images
 		docker pull python:3.6.5
 	5.5、删除镜像
 	docker rmi -f python,默认删除python:latest,如果删除指定3.6.5版本则：docker rmi -f python:3.6.5
-6、
+6、创建容器
+	docker pull centos
+7、新建并启动容器
+	docker run [option] [ImagesID]
+	7.1、OPTION说明
+		--name="容器名称"，为容器指定一个名称
+		-d:后台运行容器，返回容器id,也就启动守护式容器
+		-i:以交互模式运行容器，通常和-t同时使用
+		-t:为容器重新分配一个伪输入终端，通常和-t同时使用
+		-P[大写]：随机端口映射
+		-p[小写]：指定端口映射
+8、查看容器列表
+	docker ps -a
+9、退出容器
+	exit 关闭并且退出
+	ctrl+P+Q
+10、关闭容器
+	docker stop 容器ID
+	10.1、强制停止
+	docker kill 容器ID
+11、删除容器
+	docker rm 容器ID
+	11、1：强制删除容器ID
+	docker rm -f 容器ID
+12、查看docker最新的3条日志
+	docker logs -tf --tail 3
+13、查看容器进程
+	docker top 容器ID
+14、查看容器内部细节
+	docker inspect 容器ID
+15、进入容器
+	docker attach 容器ID
+	15.1:不进入容器执行命令
+		docker exec -it 容器ID ls -a /home
+	15.2:进入容器
+		docker exec -it 容器ID /bin/bash
+16、容器内拷贝文件到主机上
+	docker cp 容器ID:容器内路径 目的主机的路径
