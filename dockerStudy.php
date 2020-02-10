@@ -77,3 +77,9 @@ docker images
 		docker exec -it 容器ID /bin/bash
 16、容器内拷贝文件到主机上
 	docker cp 容器ID:容器内路径 目的主机的路径
+17、提交容器副本，使之成为一个新的容器镜像
+	docker commit -m="提交的描述信息" -a="作者" [容器ID] [要创建的模板镜像名]:[标签名]
+18、目录映射（可读可写）
+	docker run -it -v /宿主机绝对路径目录:/容器内目录 [镜像名]
+	18.1、目录映射（只读）
+		docker run -it -v /宿主机绝对路径目录:/容器内目录:ro [镜像名]
