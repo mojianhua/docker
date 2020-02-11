@@ -78,8 +78,55 @@ docker images
 16、容器内拷贝文件到主机上
 	docker cp 容器ID:容器内路径 目的主机的路径
 17、提交容器副本，使之成为一个新的容器镜像
+	docker commit -m="测试提交" -a="jim" [容器ID] jim/tomcat01:1.1
 	docker commit -m="提交的描述信息" -a="作者" [容器ID] [要创建的模板镜像名]:[标签名]
 18、目录映射（可读可写）
-	docker run -it -v /宿主机绝对路径目录:/容器内目录 [镜像名]
+	docker run -it -v /home/dataVolumeContainer:/dataVolumeContainer [镜像名] --privileged=true
+	docker run -it -v /宿主机绝对路径目录:/容器内目录 [镜像名] --privileged=true
 	18.1、目录映射（只读）
 		docker run -it -v /宿主机绝对路径目录:/容器内目录:ro [镜像名]
+
+
+
+<----------------------------------------------------------------------------------------------------->
+dockerFile使用
+
+1、VOLUME给镜像添加一个或多个数据卷
+	VOLUME["/dataVolumeContainer","/dataVolumeContainer2","/dataVolumeContainer3"]
+2、通过dockerFile生成镜像
+	docker build -f ./dockerFile2 -t jim/centos:1.1 .
+	docker build -f [路径] -t [新镜像名称]:[TAG] .
+3、容器继承
+	如：dc02继承dc01
+		docker run -it --name dc02 --volumes-from dc01 jim/centos
+		docker run -it --name = [容器名称] --volumes-from [被继承容器名称] [镜像]
+4、docker构建步骤
+	4.1、编写dockerFile文件
+	4.2、docker bulid
+	4.3、docker run
+<----------------------------------------------------------------------------------------------------->
+5、dockerfile保留字命令
+	5.1、FROM:基础镜像，当前镜像是基于哪个镜像
+	5.2、MAINTAINER:镜像维护者名称和邮箱
+	5.3、RUN:容器构建时需要运行的命令
+	5.4、EXPOSE:当前容器对外暴露的端口
+	5.5、WORKDIR:指定在创建容器后，终端默认登录进来的工作目录，一个落脚点
+	5.6、ENV:用来在构建镜像过程的环境变量
+	5.7、ADD:将宿主目录下的文件拷贝进镜像并且ADD命令会自动处理URL和解压tar压缩包
+	5.8、COPY:类似ADD，拷贝文件到镜像中，可不会解压
+	5.9、VOLUME:容器数据卷，用于数据保存和持久化工作
+	5.10、CMD:指定一个容器启动时运行的命令，如果多个CMD命令只会执行最后一个，CMD会被docker run之后的参数替代
+	5.11、ENTRYPONIT:指定一个容器启动时运行的命令、在指定容器启动程序以及参数
+	5.12、ONBUILD:当构建一个被dockerFile时运行命令，父镜像在被子继承后父镜像的onbulid会被处罚
+6、测试案例
+	  FROM centos
+      MAINTAINER jim<1657210793@qq.com>
+      ENV MYPATH /usr/local
+      WORKDIR $MYPATH
+      RUN yum -y install vim
+      RUN yum -y install net-tools
+      EXPOSE 80
+      CMD echo $MYPATH
+      CMD echo "success---------ok"
+      CMD /bin/bash
+
