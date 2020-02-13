@@ -129,4 +129,20 @@ dockerFile使用
       CMD echo $MYPATH
       CMD echo "success---------ok"
       CMD /bin/bash
+7、docker安装mysql
+	7.1、拉取镜像
+		docker pull mysql:5.6
+	7.2、运行镜像
+		docker run -p 81:3306 --name mysql56 -v /Jim/dockermysql56/conf:/etc/mysql/conf.d -v /Jim/dockermysql56/logs:/logs -v /Jim/dockermysql56/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.6
+8、docker安装redis
+	8.1、拉取镜像
+		docker pull redis:3.2
+	8.2、运行镜像
+		docker run -p 6379:6379 -v /jim/dockerredis32/data:/data -v /jim/dockerredis32/conf/redis.conf:/usr/local/etc/redis/redis.conf -d redis:3.2 redis-server /usr/local/etc/redis/redis.conf --appendonly yes
+	8.3、保存目录
+		/jim/dockerredis32/conf/redis.conf，新建vi redis.conf
+	8.4、下载配置文件
+		wget https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf -O redis.conf
+	8.5、使用命令测试
+		docker exec -it 67159ee8c926 redis-cli
 
